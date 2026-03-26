@@ -23,32 +23,21 @@ Requires a [NATS server](#install-and-configure-a-nats-server) connection config
 
 The set up to use this container is a three-part process:
 
-1. [Install and configure a NATS server](#install-and-configure-a-nats-server)
+1. [Configure the NATS server](#configure-the-nats-server)
 2. [Configure PRTG](#configure-prtg)
 3. [Install and use the container](#container-usage)
 
 ℹ️ If you already have a NATS server configured in PRTG, skip to [step 3](#container-usage).
 
-### Install and configure a NATS server
+### Configure the NATS server
 
-Paessler GmbH provides the **NATS Server for Paessler PRTG** Windows installer that does the following:
-
-* Installs the NATS server executable.
-* Configures the NATS server.
-* Installs and starts the NATS server service in the background.
-
-For the installer and step-by-step instructions on how to set up a NATS server on Windows, see section **Step 1: Install a NATS server** in the [Multi-Platform Probe for PRTG][manual] manual.
+Paessler PRTG ships with a NATS server. For the step-by-step instructions on how configure the NATS server for the Multi-Platform Probe, see section **2.1: Configure NATS server connection** in the [Multi-Platform Probe for PRTG][manual] manual.
 
 ℹ️ If you want to deploy your NATS server on a non-Windows system, see the NATS documentation on their website.
 
 ### Configure PRTG
 
-Once you set up your NATS server, you must configure PRTG to accept connections to the NATS server.
-This is done from the PRTG web interface via **Setup** | **Cores & Probes** | **[Multi-Platform Probe Connection Settings][prtg-manual:cores]**.
-
-For step-by-step instructions on how to configure PRTG, see section **Step 2: Configure connection in PRTG** in the [Multi-Platform Probe for PRTG][manual] manual.
-
- [prtg-manual:cores]: https://www.paessler.com/manuals/prtg/core_and_probes#multi_platform_probe_connection
+For step-by-step instructions on how to configure PRTG, see section **2.3: Configure PRTG connection** in the [Multi-Platform Probe for PRTG][manual] manual.
 
 ### Container usage
 
