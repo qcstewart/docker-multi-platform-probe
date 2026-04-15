@@ -6,8 +6,9 @@ heartbeat_interval: 30
 nats:
   url: tls://localhost:23561
   authentication:
-    user: USER
-    password: PASSWORD
+    seed: YOUR_NKEY_SEED
+    pubkey: YOUR_PUBLIC_NKEY
+  tenant: YOUR_TENANT_NAME
   request_timeout: 15
   server_ca: /config/certs/example-ca.crt
   client_name: ClientName (displayed on NATS Server)

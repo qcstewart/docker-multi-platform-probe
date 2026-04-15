@@ -6,15 +6,20 @@ Use this container to install and configure the multi-platform probe to monitor 
 For more information about remote probes and PRTG, see the [PRTG Manual: Remote Probes and Multiple Probes][prtgmanual:probes].
 
   [dockerhub]: https://hub.docker.com/r/paessler/multi-platform-probe
-  [Multi-Platform Probe]: https://kb.paessler.com/en/topic/90140
+  [Multi-Platform Probe]: https://helpdesk.paessler.com/en/support/solutions/articles/76000063903
   [prtgmanual:probes]: https://www.paessler.com/manuals/prtg/remote_probes_and_multiple_probes
 
 ## Compatibility and requirements
 
-Requires as of **[PRTG 24.2.96][prtg-96]**.
+The multi-platform probe is always backwards compatible with at least three PRTG stable
+releases.
+For more information on which multi-platform probe versions are compatible with
+which PRTG versions, see the [Knowledge Base](https://helpdesk.paessler.com/en/support/solutions/articles/76000084909).
+
+
 We recommend that you always update to the latest version of PRTG via the Auto-Update feature.
 
-Requires a [NATS server](#install-and-configure-a-nats-server) connection configured in PRTG.
+Requires a `NATS server` connection configured in PRTG.
 
  [prtg-96]: https://www.paessler.com/prtg/history/stable#24.2.96.1315
  [manual]: https://manuals.paessler.com/multiplatformprobemanual.pdf
@@ -50,8 +55,9 @@ access_key: YOUR_PROBE_ACCESS_KEY
 nats:
   url: tls://localhost:23561
   authentication:
-    user: USER
-    password: PASSWORD
+    seed: YOUR_NKEY_SEED
+    pubkey: YOUR_PUBLIC_NKEY
+  tenant: YOUR_TENANT_NAME
 ```
 
 You must put the configuration file into the `/config/config.yml` volume of the docker container.
@@ -64,14 +70,39 @@ access_key: YOUR_PROBE_ACCESS_KEY
 nats:
   url: tls://localhost:23561
   authentication:
-    user: USER
-    password: PASSWORD
+    seed: YOUR_NKEY_SEED
+    pubkey: YOUR_PUBLIC_NKEY
+  tenant: YOUR_TENANT_NAME
   server_ca: /config/certs/ca.crt
 ```
 
 ℹ️ The container also used the `/config` volume to store the [multi-platform probe's GID][GID] and therefore cannot be set as read-only (`:ro`) unless you specify the [multi-platform probe's GID][GID] as an environment variable.
 
 You can also use the `/opt/paessler/share/scripts` volume for the scripts of the [Script v2][prtgmanual:scriptv2] sensor.
+
+#### Generate a configuration file using the built-in wizard
+
+Instead of creating a `config.yaml` configuration file manually, you can use the interactive configuration `config wizard` subcommand of the probe.
+The wizard guides you through all mandatory settings and outputs a configuration file at the specified output path.
+
+##### creating a config using docker compose
+
+The following examples show how to run the `config wizard` interactively to save a config file directly to the mounted `./config/` folder.
+
+```sh
+docker compose run --rm prtgmpprobe config --output-path "/config/config.yaml" wizard
+```
+
+or using `docker run` directly:
+
+```sh
+docker run -it --rm \
+  -v $(pwd)/config:/config \
+  paessler/multi-platform-probe:latest \
+  config --output-path "/config/config.yaml" wizard
+```
+
+The container exits after the wizard finishes. The config file is written to the `./config` folder.
 
 [prtgmanual:scriptv2]: https://www.paessler.com/manuals/prtg/script_v2_sensor
 [TLS]: https://kb.paessler.com/en/topic/91877-how-can-i-create-a-tls-certificate
@@ -95,10 +126,9 @@ The multi-platform probe container supports all safe environment variables which
 While the container provides some defaults, we recommend that you change the following environment variables to your liking:
 
 | Environment Variable | Description | Default |
-|--|--|--|
+| -- | -- | -- |
 | `PRTGMPPROBE__NAME` | The name of the object shown in PRTG. | `multi-platform-probe@$(hostname)` |
 | `PRTGMPPROBE__ID` | The GID of the multi-platform probe. This must be a valid UUIDv4. The container automatically generates the GID when you create it and stores the GID in the `/config` volume. If you want to ensure that you always get the same UUIDv4, then we recommend that you use `uuidgen(1)` with a unique DNS string for your container, e.g. `uuidgen --namespace @dns --name com.paesslerfans.containers.acme --sha1`. | Randomly generated on the first run. |
-
 
 ## Feedback and issues
 
