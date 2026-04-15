@@ -56,7 +56,7 @@ fi
 if ! grep -q "^id:" "${PRTGMPPROBE__CONFIG_FILE}" ; then
     if [ -z "${PRTGMPPROBE__ID-}" ] ; then
         if [ ! -f "${PRTGMPPROBE__ID_FILE}" ] ; then
-            cat /proc/sys/kernel/random/uuid > ${PRTGMPPROBE__ID_FILE} || (
+            cat /proc/sys/kernel/random/uuid > "${PRTGMPPROBE__ID_FILE}" || (
                 error "Unable to write to ${PRTGMPPROBE__ID_FILE}. Please either set PRTGMPPROBE__ID in the container environment, 'id:' in the ${PRTGMPPROBE__CONFIG_FILE} or make sure the location ${PRTGMPPROBE__ID_FILE} is writable."
                 echo >&2 " "
                 echo >&2 "Example:"
@@ -64,7 +64,7 @@ if ! grep -q "^id:" "${PRTGMPPROBE__CONFIG_FILE}" ; then
                 exit 1
             )
         fi
-        PRTGMPPROBE__ID=$(cat ${PRTGMPPROBE__ID_FILE})
+        PRTGMPPROBE__ID=$(cat "${PRTGMPPROBE__ID_FILE}")
         export PRTGMPPROBE__ID
     fi
 fi
@@ -89,5 +89,5 @@ setcap cap_net_admin,cap_net_raw+eip ${PRTGMPPROBE__BINARY} || true
 
 exec gosu paessler_mpprobe:paessler_mpprobe \
     ${PRTGMPPROBE__BINARY} \
-    --config ${PRTGMPPROBE__CONFIG_FILE} \
+    --config "${PRTGMPPROBE__CONFIG_FILE}" \
     "$@"
