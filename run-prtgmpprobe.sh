@@ -31,8 +31,7 @@ for _var in PRTGMPPROBE__ACCESS_KEY \
             PRTGMPPROBE__NATS__AUTHENTICATION__USER \
             PRTGMPPROBE__NATS__AUTHENTICATION__PASSWORD \
             PRTGMPPROBE__NATS__AUTHENTICATION__SEED \
-            
-do
+            PRTGMPPROBE__NATS__AUTHENTICATION__PUBKEY; do
     if [ -n "${!_var-}" ] ; then
         error "Setting ${_var} = ${!_var-} as environment variable is insecure. Please set any security related variables inside ${PRTGMPPROBE__CONFIG_FILE}."
         echo >&2 " "
