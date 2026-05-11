@@ -63,7 +63,7 @@ if ! grep -q "^id:" "${PRTGMPPROBE__CONFIG_FILE}" ; then
                 exit 1
             )
         fi
-        PRTGMPPROBE__ID=$(cat "${PRTGMPPROBE__ID_FILE}")
+        PRTGMPPROBE__ID="$(cat "${PRTGMPPROBE__ID_FILE}")"
         export PRTGMPPROBE__ID
     fi
 fi
