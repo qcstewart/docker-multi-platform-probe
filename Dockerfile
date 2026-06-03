@@ -1,4 +1,4 @@
-FROM debian:11-slim
+FROM debian:13-slim
 
 LABEL org.opencontainers.image.authors="info@paessler.com"
 LABEL org.opencontainers.image.vendor="Paessler GmbH"
