@@ -51,7 +51,7 @@ RUN \
 RUN \
     apt-get update \
     && apt-get -y install --no-install-recommends --no-install-suggests \
-        prtgmpprobe \
+        prtgmpprobe=3.8.0-1 \
     && apt-get clean
 
 # add entrypoint script
